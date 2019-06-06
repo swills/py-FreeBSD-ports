@@ -3,4 +3,4 @@ freebsd_instance:
 
 task:
   install_script: pkg install -y py36-pytest
-  script: /usr/local/bin/pytest
+  script: pytest-3.6
