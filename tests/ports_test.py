@@ -13,12 +13,16 @@ def test_main_trivial():
 class DataTests(unittest.TestCase):
     def test_one_index_line(self):
         ports = FreeBSD_ports('tests/INDEX-13')
+
+        # load test data
         testlinefile = open('tests/d2.pkl', 'rb')
         testline = pickle.load(testlinefile)
         testlinefile.close()
         resultfile = open('tests/d3.pkl', 'rb')
         expected_result = pickle.load(resultfile)
         resultfile.close()
+
+        # ensure it parsed properly
         actual_result = ports.parse_index_line(testline)
         self.assertEqual(expected_result, actual_result)
 
@@ -30,3 +34,19 @@ class DataTests(unittest.TestCase):
         ports = FreeBSD_ports('tests/INDEX-13')
         maintainer = ports.search_maintainer('swills@FreeBSD.org')
         self.assertEqual(len(maintainer), 227)
+        self.assertEqual(maintainer[0]['categories'][0], 'accessibility')
+
+    def test_find_port(self):
+        ports = FreeBSD_ports('tests/INDEX-13')
+        port = ports.find_port('fist-')
+        self.assertEqual(port[0]['categories'][0], 'textproc')
+        self.assertEqual(port[0]['portdir'], 'textproc/fist')
+
+    def test_find_port_py(self):
+        ports = FreeBSD_ports('tests/INDEX-13')
+        port = ports.find_port('py36-evdev')
+        self.assertEqual(port[0]['categories'][0], 'devel')
+        self.assertEqual(port[0]['portdir'], 'devel/py-evdev')
+        port = ports.find_port('py27-evdev')
+        self.assertEqual(port[0]['categories'][0], 'devel')
+        self.assertEqual(port[0]['portdir'], 'devel/py-evdev')

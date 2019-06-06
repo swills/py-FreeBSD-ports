@@ -55,6 +55,7 @@ class FreeBSD_ports:
         edep = edep.split(' ')
         pdep = pdep.split(' ')
         fdep = fdep.split(' ')
+        categories = categories.split(' ')
         port_info = {
             'pkgname': pkgname,
             'portdir': portdir,
@@ -80,6 +81,7 @@ class FreeBSD_ports:
                 indexinfo.append(self.parse_index_line(line))
         return indexinfo
 
+    # find ports maintained by maintainer
     def search_maintainer(self, maintainer) -> list:
         ports = []
         for pkg in self.indexinfo:
@@ -87,6 +89,7 @@ class FreeBSD_ports:
                 ports.append(pkg)
         return ports
 
+    # find origin from pkgname
     def lookup_portdir(self, pkgname) -> str:
         portdir = ''
         for pkg in self.indexinfo:
@@ -94,6 +97,7 @@ class FreeBSD_ports:
                 portdir = pkg['portdir']
         return portdir
 
+    # return build depends pkg names of given portdir
     def build_depends(self, portdir) -> list:
         deps = []
         for pkg in self.indexinfo:
@@ -101,6 +105,7 @@ class FreeBSD_ports:
                 deps = pkg['bdep']
         return deps
 
+    # return build depends port dirs of given portdir
     def build_depends_ports(self, portdir) -> list:
         deps = []
         for pkg in self.indexinfo:
@@ -109,6 +114,7 @@ class FreeBSD_ports:
                     deps.append(self.lookup_portdir(dep))
         return deps
 
+    # return run depends pkg names of given portdir
     def run_depends(self, portdir) -> list:
         deps = []
         for pkg in self.indexinfo:
@@ -116,6 +122,7 @@ class FreeBSD_ports:
                 deps = pkg['rdep']
         return deps
 
+    # return run depends port dirs of given portdir
     def run_depends_ports(self, portdir) -> list:
         deps = []
         for pkg in self.indexinfo:
@@ -124,13 +131,15 @@ class FreeBSD_ports:
                     deps.append(self.lookup_portdir(dep))
         return deps
 
+    # return all index info for given pkgname name
     def find_port(self, pkgname) -> list:
         ports = []
         for pkg in self.indexinfo:
             if pkgname in pkg['pkgname']:
-                ports.append(pkg['pkgname'])
+                ports.append(pkg)
         return ports
 
+    # return portdir for given pkgname name
     def find_port_origin(self, pkgname) -> list:
         ports = []
         for pkg in self.indexinfo:
@@ -138,6 +147,7 @@ class FreeBSD_ports:
                 ports.append(pkg['portdir'])
         return ports
 
+    # generate python dependency line
     def gen_py_dep(self, pkgname) -> list:
         portname = 'py36-' + pkgname
         origin = self.find_port_origin(portname)
@@ -147,7 +157,7 @@ class FreeBSD_ports:
 
 
 def main() -> int:
-    #    ports = FreeBSD_ports()
+    #    ports = FreeBSD_ports('tests/INDEX-13')
     #    print('All ports: ')
     #    for pkg in ports.indexinfo:
     #        print('{}: {}'.format(pkg['portdir'], pkg['pkgname']))
