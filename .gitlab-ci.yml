@@ -4,4 +4,4 @@ stages:
 test:
   stage: test
   script:
-    - pytest
+    - env LANG=en_US.UTF-8 pytest
