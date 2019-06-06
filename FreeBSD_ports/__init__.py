@@ -27,14 +27,13 @@
 # import json
 # from pprint import pprint
 
-DEFAULT_INDEX = 'INDEX-13'
-DEFAULT_PATH = '/usr/ports'
-
 
 class FreeBSD_ports:
-    def __init__(self):
+    DEFAULT_INDEX_PATH = '/usr/ports/INDEX-13'
+
+    def __init__(self, indexfile=DEFAULT_INDEX_PATH):
+        self.indexfile = indexfile
         self.indexinfo = []
-        self.indexfile = DEFAULT_PATH + '/' + DEFAULT_INDEX
         self.indexinfo = self.parse_index_file(self.indexfile)
 
     def parse_index_line(self, line: str) -> dict:
@@ -148,38 +147,38 @@ class FreeBSD_ports:
 
 
 def main() -> int:
-    ports = FreeBSD_ports()
-    print('All ports: ')
-    for pkg in ports.indexinfo:
-        print('{}: {}'.format(pkg['portdir'], pkg['pkgname']))
-        print('\tfdeps: {}'.format(pkg['fdep']))
-        print('\tedeps: {}'.format(pkg['edep']))
-        print('\tpdeps: {}'.format(pkg['pdep']))
-        print('\tbdeps: {}'.format(pkg['bdep']))
-        print('\trdeps: {}'.format(pkg['rdep']))
-        print('\twww: {}'.format(pkg['www']))
-    print('swills@FreeBSD.org ports:')
-    for pkg in ports.search_maintainer('swills@FreeBSD.org'):
-        print('\t{}: {}'.format(pkg['portdir'], pkg['pkgname']))
-        print('\tbuild_depends:')
-        print('\t\t', ports.build_depends_ports(pkg['portdir']))
-        print('\trun_depends:')
-        print('\t\t', ports.run_depends_ports(pkg['portdir']))
-    print('accerciser info:')
-    print(ports.lookup_portdir('accerciser-3.22.0'))
-    print('bdeps: ')
-    print(ports.build_depends('accessibility/accerciser'))
-    print('bdeps_origins: ')
-    print(ports.build_depends_ports('accessibility/accerciser'))
-    print('find_deps:')
-    print(ports.find_port('py36-billiard'))
-    print('find_deps:')
-    # billiard kombu pytz vine
-    print(ports.find_port_origin('py36-billiard'))
-    print(ports.gen_py_dep('billiard'))
-    print(ports.gen_py_dep('pytz'))
-    print(ports.gen_py_dep('kombu'))
-    print(ports.gen_py_dep('vine'))
+    #    ports = FreeBSD_ports()
+    #    print('All ports: ')
+    #    for pkg in ports.indexinfo:
+    #        print('{}: {}'.format(pkg['portdir'], pkg['pkgname']))
+    #        print('\tfdeps: {}'.format(pkg['fdep']))
+    #        print('\tedeps: {}'.format(pkg['edep']))
+    #        print('\tpdeps: {}'.format(pkg['pdep']))
+    #        print('\tbdeps: {}'.format(pkg['bdep']))
+    #        print('\trdeps: {}'.format(pkg['rdep']))
+    #        print('\twww: {}'.format(pkg['www']))
+    #    print('swills@FreeBSD.org ports:')
+    #    for pkg in ports.search_maintainer('swills@FreeBSD.org'):
+    #        print('\t{}: {}'.format(pkg['portdir'], pkg['pkgname']))
+    #        print('\tbuild_depends:')
+    #        print('\t\t', ports.build_depends_ports(pkg['portdir']))
+    #        print('\trun_depends:')
+    #        print('\t\t', ports.run_depends_ports(pkg['portdir']))
+    #    print('accerciser info:')
+    #    print(ports.lookup_portdir('accerciser-3.22.0'))
+    #    print('bdeps: ')
+    #    print(ports.build_depends('accessibility/accerciser'))
+    #    print('bdeps_origins: ')
+    #    print(ports.build_depends_ports('accessibility/accerciser'))
+    #    print('find_deps:')
+    #    print(ports.find_port('py36-billiard'))
+    #    print('find_deps:')
+    #    # billiard kombu pytz vine
+    #    print(ports.find_port_origin('py36-billiard'))
+    #    print(ports.gen_py_dep('billiard'))
+    #    print(ports.gen_py_dep('pytz'))
+    #    print(ports.gen_py_dep('kombu'))
+    #    print(ports.gen_py_dep('vine'))
     return 0
 
 
