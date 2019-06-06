@@ -243,6 +243,14 @@ def main() -> int:
     #    rubydeporigins = ports.find_pkg_reverse_deps_origins(pkgname)
     #    for origin in rubydeporigins:
     #        print(origin)
+    #    pkgname = ports.find_port('ruby25-gems-')[0]['pkgname']
+    #    rubydeporigins = ports.find_pkg_reverse_deps_origins(pkgname)
+    #    for origin in rubydeporigins:
+    #        print(origin)
+    #     pkgname = ports.find_port('jsoncpp-')[0]['pkgname']
+    #     deporigins = ports.find_pkg_reverse_deps_origins(pkgname)
+    #     for origin in deporigins:
+    #         print(origin)
     return 0
 
 
