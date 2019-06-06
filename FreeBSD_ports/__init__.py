@@ -26,6 +26,7 @@
 #
 # import json
 # from pprint import pprint
+import re
 
 
 class FreeBSD_ports:
@@ -134,8 +135,9 @@ class FreeBSD_ports:
     # return all index info for given pkgname name
     def find_port(self, pkgname) -> list:
         ports = []
+        pattern = re.compile('^' + pkgname)
         for pkg in self.indexinfo:
-            if pkgname in pkg['pkgname']:
+            if re.match(pattern, pkg['pkgname']):
                 ports.append(pkg)
         return ports
 
@@ -145,6 +147,49 @@ class FreeBSD_ports:
         for pkg in self.indexinfo:
             if pkgname in pkg['pkgname']:
                 ports.append(pkg['portdir'])
+        return ports
+
+    # find deps of given pkg
+    def find_pkg_reverse_deps(self, pkgname) -> list:
+        ports = []
+        for pkg in self.indexinfo:
+            if pkgname in pkg['bdep']:
+                if pkg['pkgname'] not in ports:
+                    ports.append(pkg['pkgname'])
+            if pkgname in pkg['rdep']:
+                if pkg['pkgname'] not in ports:
+                    ports.append(pkg['pkgname'])
+            if pkgname in pkg['edep']:
+                if pkg['pkgname'] not in ports:
+                    ports.append(pkg['pkgname'])
+            if pkgname in pkg['fdep']:
+                if pkg['pkgname'] not in ports:
+                    ports.append(pkg['pkgname'])
+            if pkgname in pkg['pdep']:
+                if pkg['pkgname'] not in ports:
+                    ports.append(pkg['pkgname'])
+
+        return ports
+
+    # find origins of deps of given pkg
+    def find_pkg_reverse_deps_origins(self, pkgname) -> list:
+        ports = []
+        for pkg in self.indexinfo:
+            if pkgname in pkg['bdep']:
+                if pkg['portdir'] not in ports:
+                    ports.append(pkg['portdir'])
+            if pkgname in pkg['rdep']:
+                if pkg['portdir'] not in ports:
+                    ports.append(pkg['portdir'])
+            if pkgname in pkg['edep']:
+                if pkg['portdir'] not in ports:
+                    ports.append(pkg['portdir'])
+            if pkgname in pkg['fdep']:
+                if pkg['portdir'] not in ports:
+                    ports.append(pkg['portdir'])
+            if pkgname in pkg['pdep']:
+                if pkg['portdir'] not in ports:
+                    ports.append(pkg['portdir'])
         return ports
 
     # generate python dependency line
@@ -189,6 +234,15 @@ def main() -> int:
     #    print(ports.gen_py_dep('pytz'))
     #    print(ports.gen_py_dep('kombu'))
     #    print(ports.gen_py_dep('vine'))
+    #    pkgname = ports.find_port('ruby-2')[0]['pkgname']
+    #    rubydeps = ports.find_pkg_reverse_deps(pkgname)
+    #    print(len(rubydeps))
+    #    rubydeporigins = []
+    #    for dep in rubydeps:
+    #        rubydeporigins.append(ports.find_port_origin(dep))
+    #    rubydeporigins = ports.find_pkg_reverse_deps_origins(pkgname)
+    #    for origin in rubydeporigins:
+    #        print(origin)
     return 0
 
 

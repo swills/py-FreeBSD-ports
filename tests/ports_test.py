@@ -69,3 +69,15 @@ class DataTests(unittest.TestCase):
         ports = FreeBSD_ports('tests/INDEX-13')
         port = ports.find_port('py27-evdev')
         self.assertEqual(port[0]['portdir'], 'devel/py-evdev')
+
+    def test_reverse_deps(self):
+        ports = FreeBSD_ports('tests/INDEX-13')
+        pkgname = ports.find_port('syncthing-1')[0]['pkgname']
+        port = ports.find_pkg_reverse_deps(pkgname)
+        self.assertEqual(port[0], 'syncthing-gtk-0.9.4.3')
+
+    def test_reverse_deps_origins(self):
+        ports = FreeBSD_ports('tests/INDEX-13')
+        pkgname = ports.find_port('syncthing-1')[0]['pkgname']
+        port = ports.find_pkg_reverse_deps_origins(pkgname)
+        self.assertEqual(port[0], 'deskutils/syncthing-gtk')
