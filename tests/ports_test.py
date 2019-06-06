@@ -30,23 +30,42 @@ class DataTests(unittest.TestCase):
         ports = FreeBSD_ports('tests/INDEX-13')
         self.assertEqual(len(ports.indexinfo), 32322)
 
-    def test_maintainer_search(self):
+    def test_maintainer_search_count(self):
         ports = FreeBSD_ports('tests/INDEX-13')
         maintainer = ports.search_maintainer('swills@FreeBSD.org')
         self.assertEqual(len(maintainer), 227)
+
+    def test_maintainer_search_categories(self):
+        ports = FreeBSD_ports('tests/INDEX-13')
+        maintainer = ports.search_maintainer('swills@FreeBSD.org')
         self.assertEqual(maintainer[0]['categories'][0], 'accessibility')
 
-    def test_find_port(self):
+    def test_find_port_categories(self):
         ports = FreeBSD_ports('tests/INDEX-13')
         port = ports.find_port('fist-')
         self.assertEqual(port[0]['categories'][0], 'textproc')
+
+    def test_find_port_portdir(self):
+        ports = FreeBSD_ports('tests/INDEX-13')
+        port = ports.find_port('fist-')
         self.assertEqual(port[0]['portdir'], 'textproc/fist')
 
-    def test_find_port_py(self):
+    def test_find_port_py36_category(self):
         ports = FreeBSD_ports('tests/INDEX-13')
         port = ports.find_port('py36-evdev')
         self.assertEqual(port[0]['categories'][0], 'devel')
+
+    def test_find_port_py36_portdir(self):
+        ports = FreeBSD_ports('tests/INDEX-13')
+        port = ports.find_port('py36-evdev')
         self.assertEqual(port[0]['portdir'], 'devel/py-evdev')
+
+    def test_find_port_py27_category(self):
+        ports = FreeBSD_ports('tests/INDEX-13')
         port = ports.find_port('py27-evdev')
         self.assertEqual(port[0]['categories'][0], 'devel')
+
+    def test_find_port_py27_portdir(self):
+        ports = FreeBSD_ports('tests/INDEX-13')
+        port = ports.find_port('py27-evdev')
         self.assertEqual(port[0]['portdir'], 'devel/py-evdev')
