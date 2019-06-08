@@ -85,7 +85,7 @@ class FreeBSD_ports:
 
     # find portname from short incomplete package name, without version
     def find_portdir(self, pkgname):
-        pattern = re.compile('^' + pkgname)
+        pattern = re.compile('^' + pkgname, re.IGNORECASE)
         try:
             for pkg in self.indexinfo:
                 if re.match(pattern, pkg['pkgname']):
@@ -218,62 +218,3 @@ class FreeBSD_ports:
         dep = '\t${{PYTHON_PKGNAMEPREFIX}}'
         dep = dep + '{}>=0:{}@${{PY_FLAVOR}} \\'.format(pkgname, origin[0])
         return dep
-
-
-def main() -> int:
-    #    ports = FreeBSD_ports('tests/INDEX-13')
-    #    print(ports.find_run_depends_pkg('syncthing-gtk-0.9.4.3'))
-    #    print(ports.find_portdir('ruby-2'))
-    #    print('All ports: ')
-    #    for pkg in ports.indexinfo:
-    #        print('{}: {}'.format(pkg['portdir'], pkg['pkgname']))
-    #        print('\tfdeps: {}'.format(pkg['fdep']))
-    #        print('\tedeps: {}'.format(pkg['edep']))
-    #        print('\tpdeps: {}'.format(pkg['pdep']))
-    #        print('\tbdeps: {}'.format(pkg['bdep']))
-    #        print('\trdeps: {}'.format(pkg['rdep']))
-    #        print('\twww: {}'.format(pkg['www']))
-    #    print('swills@FreeBSD.org ports:')
-    #    for pkg in ports.search_maintainer('swills@FreeBSD.org'):
-    #        print('\t{}: {}'.format(pkg['portdir'], pkg['pkgname']))
-    #        print('\tbuild_depends:')
-    #        print('\t\t', ports.build_depends_ports(pkg['portdir']))
-    #        print('\trun_depends:')
-    #        print('\t\t', ports.run_depends_ports(pkg['portdir']))
-    #    print('accerciser info:')
-    #    print(ports.find_port_origin('accerciser-3.22.0'))
-    #    print('bdeps: ')
-    #    print(ports.build_depends('accessibility/accerciser'))
-    #    print('bdeps_origins: ')
-    #    print(ports.build_depends_ports('accessibility/accerciser'))
-    #    print('find_deps:')
-    #    print(ports.find_port('py36-billiard'))
-    #    print('find_deps:')
-    #    # billiard kombu pytz vine
-    #    print(ports.find_port_origin('py36-billiard'))
-    #    print(ports.gen_py_dep('billiard'))
-    #    print(ports.gen_py_dep('pytz'))
-    #    print(ports.gen_py_dep('kombu'))
-    #    print(ports.gen_py_dep('vine'))
-    #    pkgname = ports.find_port('ruby-2')[0]['pkgname']
-    #    rubydeps = ports.find_pkg_reverse_deps(pkgname)
-    #    print(len(rubydeps))
-    #    rubydeporigins = []
-    #    for dep in rubydeps:
-    #        rubydeporigins.append(ports.find_port_origin(dep))
-    #    rubydeporigins = ports.find_pkg_reverse_deps_origins(pkgname)
-    #    for origin in rubydeporigins:
-    #        print(origin)
-    #    pkgname = ports.find_port('ruby25-gems-')[0]['pkgname']
-    #    rubydeporigins = ports.find_pkg_reverse_deps_origins(pkgname)
-    #    for origin in rubydeporigins:
-    #        print(origin)
-    #     pkgname = ports.find_port('jsoncpp-')[0]['pkgname']
-    #     deporigins = ports.find_pkg_reverse_deps_origins(pkgname)
-    #     for origin in deporigins:
-    #         print(origin)
-    return 0
-
-
-if __name__ == '__main__':
-    main()

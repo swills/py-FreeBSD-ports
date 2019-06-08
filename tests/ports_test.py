@@ -3,11 +3,6 @@ import pickle
 import unittest
 
 from FreeBSD_ports import FreeBSD_ports
-from FreeBSD_ports import main
-
-
-def test_main_trivial():
-    assert main() == 0
 
 
 class DataTests(unittest.TestCase):
