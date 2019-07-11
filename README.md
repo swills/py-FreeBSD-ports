@@ -1,7 +1,7 @@
 py-FreeBSD-Ports
 ========
 
-Python port of p5-FreeBSD-ports
+Parse FreeBSD Ports INDEX, provide search API
 
 Installation
 ------------
